@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 // MARK: - Custom Delegates
 
@@ -31,6 +32,19 @@ extension MainViewController: MainViewDelegate {
 
     func didUpdateImagePokemon(image: PokemonImageModel) {
         correctAnswerImage = image.imageUrl
+        DispatchQueue.main.async {
+            let url = URL(string: image.imageUrl)
+            
+            /// Adjust color
+            //let processor = ColorControlsProcessor(brightness: 1.0, contrast: 0.7, saturation: 1.1, inputEV: 0.7)
+            let effect = ColorControlsProcessor(brightness: -1, contrast: 1, saturation: 1, inputEV: 0)
+            self.pokemonImage.kf.setImage(
+                with: url,
+                options: [
+                    .processor(effect)
+                ]
+            )
+        }
     }
 
     func didFailWithError(error: Error) {

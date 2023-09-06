@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     private var stackView: UIStackView!
-    private var pokemonImage: UIImageView!
+    var pokemonImage: UIImageView!
     private var titleLabel: UILabel!
     private var scoreLabel: UILabel!
     private var messageLabel: UILabel!
@@ -60,6 +60,7 @@ class MainViewController: UIViewController {
 
         pokemonImage = UIImageView(image: viewModel.getPokemonImage())
         pokemonImage.translatesAutoresizingMaskIntoConstraints = false
+        pokemonImage.heightAnchor.constraint(equalToConstant: 200).isActive = true
         pokemonImage.contentMode = .scaleAspectFit
 
         messageLabel = UILabel()
@@ -149,11 +150,32 @@ class MainViewController: UIViewController {
     @objc func optionPressed(sender: UIButton!) {
         if let userAnswer = sender.title(for: .normal) {
             if game.checkAnswer(userAnswer, correctAnswer){
-                messageLabel.text = "Si, es un \(userAnswer)"
+                messageLabel.text = "Si, es un \(userAnswer.capitalized)"
                 scoreLabel.text = "Puntaje: \(game.score)"
                 
                 sender.layer.borderColor = UIColor.systemGreen.cgColor
                 sender.layer.borderWidth = 2
+                
+                let url = URL(string: correctAnswerImage)
+                pokemonImage.kf.setImage(with: url)
+                
+                Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false){ [self] timer in
+                    viewModel.fetchPokemon()
+                    messageLabel.text = " "
+                    sender.layer.borderWidth = 0
+                }
+            }else{
+                sender.layer.borderColor = UIColor.systemRed.cgColor
+                sender.layer.borderWidth = 2
+                
+                messageLabel.text = "Noo, es un \(correctAnswer.capitalized)"
+                let url = URL(string: correctAnswerImage)
+                pokemonImage.kf.setImage(with: url)
+                
+                Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false){ [self] timer in
+                    resetGame()
+                    sender.layer.borderWidth = 0
+                }
             }
         }
     }
@@ -171,5 +193,12 @@ class MainViewController: UIViewController {
                 button.setTitle("", for: .normal)
             }*/
         }
+    }
+    
+    func resetGame(){
+        viewModel.fetchPokemon()
+        game.setScore(score: 0)
+        scoreLabel.text = "Puntaje: \(game.score)"
+        messageLabel.text = " "
     }
 }
