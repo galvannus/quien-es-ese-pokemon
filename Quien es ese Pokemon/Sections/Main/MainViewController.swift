@@ -12,11 +12,20 @@ class MainViewController: UIViewController {
     private var pokemonImage: UIImageView!
     private var titleLabel: UILabel!
     private var scoreLabel: UILabel!
-    private var pokemonNameLabel: UILabel!
+    private var messageLabel: UILabel!
 
-    var randomPokemons: [PokemonModel] = []
+    var randomPokemons: [PokemonModel] = [] {
+        didSet {
+            setButtonTitles()
+        }
+    }
+
+    // Array to store references to OptionButtons
+    var optionButtons: [UIButton] = []
     var correctAnswer: String = ""
     var correctAnswerImage: String = ""
+
+    lazy var game = GameModel()
 
     // MARK: - Properties
 
@@ -32,6 +41,7 @@ class MainViewController: UIViewController {
         setUpView()
         setUpLayout()
         viewModel.fetchPokemon()
+        messageLabel.text = " "
     }
 
     private func setUpView() {
@@ -52,11 +62,11 @@ class MainViewController: UIViewController {
         pokemonImage.translatesAutoresizingMaskIntoConstraints = false
         pokemonImage.contentMode = .scaleAspectFit
 
-        pokemonNameLabel = UILabel()
-        pokemonNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        pokemonNameLabel.text = "Si, es un Pikachu"
-        pokemonNameLabel.numberOfLines = 0
-        pokemonNameLabel.textAlignment = .center
+        messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.text = "Si, es un Pikachu"
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
 
         /*
          nameOption2Button = UIButton(type: .system)
@@ -93,9 +103,13 @@ class MainViewController: UIViewController {
             button.layer.masksToBounds = false
             // Radio de las esquinas del button
             button.layer.cornerRadius = 10.0
+            button.tag = 10
             button.addTarget(self, action: #selector(optionPressed), for: .touchUpInside)
 
             stackView.addArrangedSubview(button)
+            
+            // Add the button to the array
+            optionButtons.append(button)
         }
     }
 
@@ -103,7 +117,7 @@ class MainViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(scoreLabel)
         view.addSubview(pokemonImage)
-        view.addSubview(pokemonNameLabel)
+        view.addSubview(messageLabel)
         view.addSubview(stackView)
 
         /*
@@ -122,10 +136,10 @@ class MainViewController: UIViewController {
             pokemonImage.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor, constant: 50),
             pokemonImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            pokemonNameLabel.topAnchor.constraint(equalTo: pokemonImage.bottomAnchor, constant: 2),
-            pokemonNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: pokemonImage.bottomAnchor, constant: 2),
+            messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            stackView.topAnchor.constraint(equalTo: pokemonNameLabel.bottomAnchor, constant: 40),
+            stackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 40),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             // Width anchor 20 left x 20 right
             stackView.widthAnchor.constraint(equalToConstant: view.bounds.width - 40),
@@ -133,8 +147,29 @@ class MainViewController: UIViewController {
     }
 
     @objc func optionPressed(sender: UIButton!) {
-        if let title = sender.title(for: .normal) {
-            print(title)
+        if let userAnswer = sender.title(for: .normal) {
+            if game.checkAnswer(userAnswer, correctAnswer){
+                messageLabel.text = "Si, es un \(userAnswer)"
+                scoreLabel.text = "Puntaje: \(game.score)"
+                
+                sender.layer.borderColor = UIColor.systemGreen.cgColor
+                sender.layer.borderWidth = 2
+            }
+        }
+    }
+
+    func setButtonTitles() {
+        // Iterate through the buttons and update their titles
+        for (index, button) in optionButtons.enumerated() {
+            if index < randomPokemons.count {
+                // button.setTitle(randomPokemons[index].name.capitalized, for: .normal)
+                DispatchQueue.main.sync { [self] in
+                    button.setTitle(randomPokemons[safe: index]?.name.capitalized, for: .normal)
+                }
+            }/* else {
+                // Handle the case where there are fewer Pokemon names than buttons
+                button.setTitle("", for: .normal)
+            }*/
         }
     }
 }

@@ -14,7 +14,7 @@ extension MainViewController: MainViewDelegate {
 
     func didUpdatePokemon(pokemons: [PokemonModel]) {
         randomPokemons = pokemons.choose(4)
-        print(randomPokemons)
+        //print(randomPokemons)
 
         // Get random number
         let index = Int.random(in: 0 ... 3)
@@ -30,7 +30,7 @@ extension MainViewController: MainViewDelegate {
     // MARK: - PokemonImageModel
 
     func didUpdateImagePokemon(image: PokemonImageModel) {
-        print(image.imageUrl)
+        correctAnswerImage = image.imageUrl
     }
 
     func didFailWithError(error: Error) {
