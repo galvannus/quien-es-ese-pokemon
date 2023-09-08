@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 class MainViewController: UIViewController {
+    
+    //Propiedad para guardar las referencias de las propiedades
+    var cancellables = Set<AnyCancellable>()
+    
     private var stackView: UIStackView!
     var pokemonImage: UIImageView!
     private var titleLabel: UILabel!
@@ -21,7 +26,7 @@ class MainViewController: UIViewController {
     }
 
     // Array to store references to OptionButtons
-    var optionButtons: [UIButton] = []
+    private var optionButtons: [UIButton] = []
     var correctAnswer: String = ""
     var correctAnswerImage: String = ""
 
@@ -35,6 +40,7 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        createBindingViewWithViewModel()
         view.backgroundColor = .systemGray6
         viewModel.apiCaller.delegate = self
 
@@ -42,6 +48,7 @@ class MainViewController: UIViewController {
         setUpLayout()
         viewModel.fetchPokemon()
         messageLabel.text = " "
+        viewModel.suscriptions()
     }
 
     private func setUpView() {
@@ -108,7 +115,7 @@ class MainViewController: UIViewController {
             button.addTarget(self, action: #selector(optionPressed), for: .touchUpInside)
 
             stackView.addArrangedSubview(button)
-            
+
             // Add the button to the array
             optionButtons.append(button)
         }
@@ -149,33 +156,36 @@ class MainViewController: UIViewController {
 
     @objc func optionPressed(sender: UIButton!) {
         if let userAnswer = sender.title(for: .normal) {
-            if game.checkAnswer(userAnswer, correctAnswer){
+            if game.checkAnswer(userAnswer, correctAnswer) {
                 messageLabel.text = "Si, es un \(userAnswer.capitalized)"
                 scoreLabel.text = "Puntaje: \(game.score)"
-                
+
                 sender.layer.borderColor = UIColor.systemGreen.cgColor
                 sender.layer.borderWidth = 2
-                
+
                 let url = URL(string: correctAnswerImage)
                 pokemonImage.kf.setImage(with: url)
-                
-                Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false){ [self] timer in
+
+                Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { [self] _ in
                     viewModel.fetchPokemon()
                     messageLabel.text = " "
                     sender.layer.borderWidth = 0
                 }
-            }else{
-                sender.layer.borderColor = UIColor.systemRed.cgColor
-                sender.layer.borderWidth = 2
-                
-                messageLabel.text = "Noo, es un \(correctAnswer.capitalized)"
-                let url = URL(string: correctAnswerImage)
-                pokemonImage.kf.setImage(with: url)
-                
-                Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false){ [self] timer in
-                    resetGame()
-                    sender.layer.borderWidth = 0
-                }
+            } else {
+                /* sender.layer.borderColor = UIColor.systemRed.cgColor
+                 sender.layer.borderWidth = 2
+
+                 messageLabel.text = "Noo, es un \(correctAnswer.capitalized)"
+                 // Convertir Url en imagen
+                 let url = URL(string: correctAnswerImage)
+                 pokemonImage.kf.setImage(with: url)
+
+                 Timer.scheduledTimer(withTimeInterval: 0.8, repeats: false) { [self] _ in
+                     resetGame()
+                     sender.layer.borderWidth = 0
+                 } */
+                viewModel.gameOver = true
+                resetGame()
             }
         }
     }
@@ -184,21 +194,42 @@ class MainViewController: UIViewController {
         // Iterate through the buttons and update their titles
         for (index, button) in optionButtons.enumerated() {
             if index < randomPokemons.count {
-                // button.setTitle(randomPokemons[index].name.capitalized, for: .normal)
                 DispatchQueue.main.sync { [self] in
                     button.setTitle(randomPokemons[safe: index]?.name.capitalized, for: .normal)
                 }
-            }/* else {
-                // Handle the case where there are fewer Pokemon names than buttons
-                button.setTitle("", for: .normal)
-            }*/
+            } /* else {
+                 // Handle the case where there are fewer Pokemon names than buttons
+                 button.setTitle("", for: .normal)
+             }*/
         }
     }
-    
-    func resetGame(){
+
+    func resetGame() {
         viewModel.fetchPokemon()
         game.setScore(score: 0)
         scoreLabel.text = "Puntaje: \(game.score)"
         messageLabel.text = " "
+        viewModel.gameOver = false
+    }
+    
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GameOverController"{
+            let destination = segue.destination as! GameOverController
+            destination.pokemonName = correctAnswer
+            destination.pokemonImageUrl = correctAnswerImage
+            destination.finalScore = game.score
+        }
+    }*/
+    
+    func createBindingViewWithViewModel(){
+        viewModel.$gameOver.sink { [weak self] state in
+            if state{
+                let gameOverView = GameOverController()
+                gameOverView.pokemonName = self!.correctAnswer
+                gameOverView.pokemonImageUrl = self!.correctAnswerImage
+                gameOverView.finalScore = self!.game.score
+                self?.present(gameOverView, animated: true)
+            }
+        }.store(in: &cancellables)
     }
 }

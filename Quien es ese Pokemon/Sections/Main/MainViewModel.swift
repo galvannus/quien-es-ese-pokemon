@@ -6,12 +6,23 @@
 //
 
 import UIKit
+import Combine
 
 class MainViewModel {
+    /*@Published var finalScore = 0
+    @Published var pokemonName = ""
+    @Published var pokemonImageUrl = ""*/
+    @Published var gameOver = false
+    
+    //Propiedad para guardar las referencias de las propiedades
+    var cancellables = Set<AnyCancellable>()
+    
     let apiCaller: ApiCaller
     
     init(apiCaller: ApiCaller){
         self.apiCaller = apiCaller
+        
+        suscriptions()
     }
 
     func getPokemonImage() -> UIImage {
@@ -30,4 +41,9 @@ class MainViewModel {
         apiCaller.performRequestImage(with: url)
     }
     
+    func suscriptions(){
+        $gameOver.sink{value in
+            print("GameOver")
+        }.store(in: &cancellables)
+    }
 }

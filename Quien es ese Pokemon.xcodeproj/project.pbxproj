@@ -24,6 +24,10 @@
 		0B67BAF82AA5909700429268 /* PokemonImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B67BAF72AA5909700429268 /* PokemonImageModel.swift */; };
 		0B7346092AA2EC4E00C6D48D /* PokemonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7346082AA2EC4E00C6D48D /* PokemonData.swift */; };
 		0B763AE72AA6C38800533B5A /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B763AE62AA6C38800533B5A /* GameModel.swift */; };
+		0BE2D0822AA9583200C52AE4 /* GameOverModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2D0812AA9583200C52AE4 /* GameOverModel.swift */; };
+		0BE2D0842AA9584500C52AE4 /* GameOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2D0832AA9584500C52AE4 /* GameOverController.swift */; };
+		0BE2D0862AA9719300C52AE4 /* MainViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2D0852AA9719300C52AE4 /* MainViewCoordinator.swift */; };
+		0BE2D0882AA98F9100C52AE4 /* GameOverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2D0872AA98F9100C52AE4 /* GameOverCoordinator.swift */; };
 		B865F0962181FB46F168AB50 /* Pods_Quien_es_ese_Pokemon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AC2B967E2B9DA6EC9470492 /* Pods_Quien_es_ese_Pokemon.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +51,10 @@
 		0B67BAF72AA5909700429268 /* PokemonImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonImageModel.swift; sourceTree = "<group>"; };
 		0B7346082AA2EC4E00C6D48D /* PokemonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonData.swift; sourceTree = "<group>"; };
 		0B763AE62AA6C38800533B5A /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		0BE2D0812AA9583200C52AE4 /* GameOverModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverModel.swift; sourceTree = "<group>"; };
+		0BE2D0832AA9584500C52AE4 /* GameOverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverController.swift; sourceTree = "<group>"; };
+		0BE2D0852AA9719300C52AE4 /* MainViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCoordinator.swift; sourceTree = "<group>"; };
+		0BE2D0872AA98F9100C52AE4 /* GameOverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverCoordinator.swift; sourceTree = "<group>"; };
 		44F8CECC92C18BC90D1DDE75 /* Pods-Quien es ese Pokemon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quien es ese Pokemon.release.xcconfig"; path = "Target Support Files/Pods-Quien es ese Pokemon/Pods-Quien es ese Pokemon.release.xcconfig"; sourceTree = "<group>"; };
 		9AC2B967E2B9DA6EC9470492 /* Pods_Quien_es_ese_Pokemon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Quien_es_ese_Pokemon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB32404E6B648DFD1128E054 /* Pods-Quien es ese Pokemon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quien es ese Pokemon.debug.xcconfig"; path = "Target Support Files/Pods-Quien es ese Pokemon/Pods-Quien es ese Pokemon.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,12 +93,12 @@
 		0B0C55522A97175F00ECA54F /* Quien es ese Pokemon */ = {
 			isa = PBXGroup;
 			children = (
-				0B67BAF22AA57C3700429268 /* Networking */,
 				0B6727252A983EA60094C900 /* Application */,
 				0B6727262A984B8E0094C900 /* Coordinator */,
 				0B6727302A98523D0094C900 /* Helpers */,
 				0B6727322A98532D0094C900 /* Libraries */,
 				0B6727222A9837500094C900 /* Models */,
+				0B67BAF22AA57C3700429268 /* Networking */,
 				0B67272D2A98515C0094C900 /* Resources */,
 				0B67272F2A9852150094C900 /* Sections */,
 				0B6727312A98524D0094C900 /* Shared */,
@@ -105,6 +113,7 @@
 				0B67BAEC2AA503BC00429268 /* MainView+Delegates.swift */,
 				0B67BAE82AA4EA1A00429268 /* MainView+Protocols.swift */,
 				0B0C55572A97175F00ECA54F /* MainViewController.swift */,
+				0BE2D0852AA9719300C52AE4 /* MainViewCoordinator.swift */,
 				0B6727202A9836AB0094C900 /* MainViewModel.swift */,
 			);
 			path = Main;
@@ -113,11 +122,11 @@
 		0B6727222A9837500094C900 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0B763AE62AA6C38800533B5A /* GameModel.swift */,
 				0B7346082AA2EC4E00C6D48D /* PokemonData.swift */,
-				0B67BAEE2AA50B1800429268 /* PokemonModel.swift */,
 				0B67BAF02AA577C400429268 /* PokemonImageData.swift */,
 				0B67BAF72AA5909700429268 /* PokemonImageModel.swift */,
-				0B763AE62AA6C38800533B5A /* GameModel.swift */,
+				0B67BAEE2AA50B1800429268 /* PokemonModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -160,6 +169,7 @@
 		0B67272F2A9852150094C900 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				0BE2D07C2AA955BC00C52AE4 /* GameOver */,
 				0B0C55672A9717EE00ECA54F /* Main */,
 			);
 			path = Sections;
@@ -195,13 +205,22 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
+		0BE2D07C2AA955BC00C52AE4 /* GameOver */ = {
+			isa = PBXGroup;
+			children = (
+				0BE2D0832AA9584500C52AE4 /* GameOverController.swift */,
+				0BE2D0812AA9583200C52AE4 /* GameOverModel.swift */,
+				0BE2D0872AA98F9100C52AE4 /* GameOverCoordinator.swift */,
+			);
+			path = GameOver;
+			sourceTree = "<group>";
+		};
 		17B2D0204D7D4909446D13A5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				FB32404E6B648DFD1128E054 /* Pods-Quien es ese Pokemon.debug.xcconfig */,
 				44F8CECC92C18BC90D1DDE75 /* Pods-Quien es ese Pokemon.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -329,9 +348,13 @@
 			files = (
 				0B0C55582A97175F00ECA54F /* MainViewController.swift in Sources */,
 				0B67BAF62AA57E4200429268 /* ApiCaller.swift in Sources */,
+				0BE2D0842AA9584500C52AE4 /* GameOverController.swift in Sources */,
 				0B7346092AA2EC4E00C6D48D /* PokemonData.swift in Sources */,
+				0BE2D0862AA9719300C52AE4 /* MainViewCoordinator.swift in Sources */,
 				0B67BAF82AA5909700429268 /* PokemonImageModel.swift in Sources */,
+				0BE2D0882AA98F9100C52AE4 /* GameOverCoordinator.swift in Sources */,
 				0B0C55542A97175F00ECA54F /* AppDelegate.swift in Sources */,
+				0BE2D0822AA9583200C52AE4 /* GameOverModel.swift in Sources */,
 				0B763AE72AA6C38800533B5A /* GameModel.swift in Sources */,
 				0B67BAED2AA503BC00429268 /* MainView+Delegates.swift in Sources */,
 				0B67BAF42AA57CBA00429268 /* NetworkConstant.swift in Sources */,
