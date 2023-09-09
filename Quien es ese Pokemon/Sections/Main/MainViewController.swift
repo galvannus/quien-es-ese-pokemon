@@ -5,14 +5,13 @@
 //  Created by Jorge Alejndro Marcial Galvan on 23/08/23.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 class MainViewController: UIViewController {
-    
-    //Propiedad para guardar las referencias de las propiedades
+    // Propiedad para guardar las referencias de las propiedades
     var cancellables = Set<AnyCancellable>()
-    
+
     private var stackView: UIStackView!
     var pokemonImage: UIImageView!
     private var titleLabel: UILabel!
@@ -211,20 +210,12 @@ class MainViewController: UIViewController {
         messageLabel.text = " "
         viewModel.gameOver = false
     }
-    
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GameOverController"{
-            let destination = segue.destination as! GameOverController
-            destination.pokemonName = correctAnswer
-            destination.pokemonImageUrl = correctAnswerImage
-            destination.finalScore = game.score
-        }
-    }*/
-    
-    func createBindingViewWithViewModel(){
+
+    func createBindingViewWithViewModel() {
         viewModel.$gameOver.sink { [weak self] state in
-            if state{
+            if state {
                 let gameOverView = GameOverController()
+                gameOverView.modalPresentationStyle = .fullScreen
                 gameOverView.pokemonName = self!.correctAnswer
                 gameOverView.pokemonImageUrl = self!.correctAnswerImage
                 gameOverView.finalScore = self!.game.score
